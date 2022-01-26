@@ -26,7 +26,8 @@ def download_comics():
     url = f'https://xkcd.com/{random_page_number}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
-    title = response.json()['title']
-    img_url = response.json()['img']
+    response_json = response.json()
+    title = response_json['title']
+    img_url = response_json['img']
     img_name = download_img(img_url, title)
     return title, img_name

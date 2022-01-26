@@ -15,11 +15,12 @@ def get_group_server_address(vk_access_token, group_id):
     }
     response = requests.get(url, params=payload)
     response.raise_for_status()
+    response_json = response.json()
     try:
-        group_server_address = response.json()['response']['upload_url']
+        group_server_address = response_json['response']['upload_url']
         return group_server_address
     except:
-        error = response.json()['error']
+        error = response_json['error']
         if error:
             return print('Ошибка в запросе адреса сервера группы')
 
@@ -48,11 +49,12 @@ def save_album_photo(vk_access_token, group_id, uploaded_photo):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
+    response_json = response.json()
     try:
-        album_photo = response.json()['response'][0]
+        album_photo = response_json['response'][0]
         return album_photo
     except:
-        error = response.json()['error']
+        error = response_json['error']
         if error:
             return print('Ошибка в сохранении фото в альбом')
 
@@ -77,9 +79,9 @@ def post_wall(vk_access_token, group_id, album_photo, comics_title):
 def remove_files(img_name):
     """ param <path> could either be relative or absolute. """
     if os.path.isfile(img_name) or os.path.islink(img_name):
-        os.remove(img_name)  # remove the file
+        os.remove(img_name)
     elif os.path.isdir(img_name):
-        shutil.rmtree(img_name)  # remove dir and all contains
+        shutil.rmtree(img_name)
     else:
         raise ValueError("file {} is not a file or dir.".format(img_name))
 
