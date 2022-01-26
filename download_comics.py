@@ -4,7 +4,7 @@ import requests
 
 
 def get_random_comic_page():
-    url = 'https://xkcd.com/353/info.0.json'
+    url = 'https://xkcd.com/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
     all_pages = response.json()['num']
