@@ -21,7 +21,7 @@ def download_img(img_url, title):
     return file_path
 
 
-def download_comics():
+def download_random_comics():
     random_page_number = get_random_comic_page()
     url = f'https://xkcd.com/{random_page_number}/info.0.json'
     response = requests.get(url)
