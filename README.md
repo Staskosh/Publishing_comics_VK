@@ -1,6 +1,6 @@
 # Publish comics VK
 
-This script allows downloading comics posting it on your own VK group.
+This script allows download and post comics on your own VK group.
 
 ### How to install
 
