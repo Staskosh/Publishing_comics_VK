@@ -87,14 +87,12 @@ def post_wall(vk_access_token, group_id, album_photo, comics_title):
         exit('Ошибка в публикации фото в группу')
 
 
-def remove_files(img_name):
+def remove_photo(img_name):
     """ param <path> could either be relative or absolute. """
-    if os.path.isfile(img_name) or os.path.islink(img_name):
+    if os.path.isfile(img_name):
         os.remove(img_name)
-    elif os.path.isdir(img_name):
-        shutil.rmtree(img_name)
     else:
-        raise ValueError("file {} is not a file or dir.".format(img_name))
+        raise ValueError(f'file {img_name} is not a file.'.format(img_name))
 
 
 def main():
@@ -106,7 +104,7 @@ def main():
     uploaded_photo = upload_photo(group_server_address, img_name)
     album_photo = save_album_photo(vk_access_token, group_id, uploaded_photo)
     post_wall(vk_access_token, group_id, album_photo, comics_title)
-    remove_files(img_name)
+    remove_photo(img_name)
 
 
 if __name__ == '__main__':
