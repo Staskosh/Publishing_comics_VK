@@ -41,17 +41,20 @@ def upload_photo(group_server_address, img_name):
     except requests.HTTPError:
         exit('Ошибка в загрузке фото на сервер группы')
     uploaded_photo = response.json()
-    return uploaded_photo
+    photo = uploaded_photo['photo']
+    server = uploaded_photo['server']
+    hash = uploaded_photo['hash']
+    return photo, server, hash
 
 
-def save_album_photo(vk_access_token, group_id, uploaded_photo):
+def save_album_photo(vk_access_token, group_id, photo, server, hash):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     payload = {
         'access_token': vk_access_token,
         'group_id': group_id,
-        'photo': uploaded_photo['photo'],
-        'server': uploaded_photo['server'],
-        'hash': uploaded_photo['hash'],
+        'photo': photo,
+        'server': server,
+        'hash': hash,
         'v': 5.131,
     }
     response = requests.post(url, params=payload)
@@ -62,14 +65,13 @@ def save_album_photo(vk_access_token, group_id, uploaded_photo):
     except requests.HTTPError:
         exit('Ошибка в запросе сохранение фото в альбом группы')
     album_photo = response_json['response'][0]
-    return album_photo
-
-
-def post_wall(vk_access_token, group_id, album_photo, comics_title):
     owner_id = album_photo['owner_id']
     photo_id = album_photo['id']
-    url = 'https://api.vk.com/method/wall.post'
+    return owner_id, photo_id
 
+
+def post_wall(vk_access_token, group_id, owner_id, photo_id, comics_title):
+    url = 'https://api.vk.com/method/wall.post'
     payload = {
         'access_token': vk_access_token,
         'owner_id': f'-{group_id}',
@@ -100,9 +102,9 @@ def main():
     group_id = os.getenv('VK_GROUP_ID')
     comics_title, img_name = download_random_comic()
     group_server_address = get_group_server_address(vk_access_token, group_id)
-    uploaded_photo = upload_photo(group_server_address, img_name)
-    album_photo = save_album_photo(vk_access_token, group_id, uploaded_photo)
-    post_wall(vk_access_token, group_id, album_photo, comics_title)
+    photo, server, hash = upload_photo(group_server_address, img_name)
+    owner_id, photo_id = save_album_photo(vk_access_token, group_id, photo, server, hash)
+    post_wall(vk_access_token, group_id, owner_id, photo_id, comics_title)
     remove_photo(img_name)
 
 
