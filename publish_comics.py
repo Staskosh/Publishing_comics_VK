@@ -100,12 +100,17 @@ def main():
     load_dotenv()
     vk_access_token = os.getenv('VK_ACCESS_TOKEN')
     group_id = os.getenv('VK_GROUP_ID')
-    comics_title, img_name = download_random_comic()
-    group_server_address = get_group_server_address(vk_access_token, group_id)
-    photo, server, hash = upload_photo(group_server_address, img_name)
-    owner_id, photo_id = save_album_photo(vk_access_token, group_id, photo, server, hash)
-    post_wall(vk_access_token, group_id, owner_id, photo_id, comics_title)
-    remove_photo(img_name)
+    try:
+        comics_title, img_name = download_random_comic()
+        group_server_address = get_group_server_address(vk_access_token, group_id)
+        photo, server, hash = upload_photo(group_server_address, img_name)
+        owner_id, photo_id = save_album_photo(vk_access_token, group_id, photo, server, hash)
+        post_wall(vk_access_token, group_id, owner_id, photo_id, comics_title)
+    except ValueError:
+        print('file is not a file.')
+    finally:
+        remove_photo(img_name)
+
 
 
 if __name__ == '__main__':
