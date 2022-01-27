@@ -32,18 +32,17 @@ def get_group_server_address(vk_access_token, group_id):
 
 def upload_photo(group_server_address, img_name):
     with open(img_name, 'rb') as file:
-        url = group_server_address
         files = {
             'photo': file,
         }
-        response = requests.post(url, files=files)
-        response.raise_for_status()
-        try:
-            check_VK_response(response)
-        except requests.HTTPError:
-            exit('Ошибка в загрузке фото на сервер группы')
-        uploaded_photo = response.json()
-        return uploaded_photo
+        response = requests.post(group_server_address, files=files)
+    response.raise_for_status()
+    try:
+        check_VK_response(response)
+    except requests.HTTPError:
+        exit('Ошибка в загрузке фото на сервер группы')
+    uploaded_photo = response.json()
+    return uploaded_photo
 
 
 def save_album_photo(vk_access_token, group_id, uploaded_photo):
