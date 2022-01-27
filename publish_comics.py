@@ -1,5 +1,4 @@
 import os
-import shutil
 
 import requests
 from dotenv import load_dotenv
@@ -68,14 +67,14 @@ def save_album_photo(vk_access_token, group_id, uploaded_photo):
 
 def post_wall(vk_access_token, group_id, album_photo, comics_title):
     owner_id = album_photo['owner_id']
-    id = album_photo['id']
+    photo_id = album_photo['id']
     url = 'https://api.vk.com/method/wall.post'
 
     payload = {
         'access_token': vk_access_token,
         'owner_id': f'-{group_id}',
         'message': comics_title,
-        'attachments': f'photo{owner_id}_{id}',
+        'attachments': f'photo{owner_id}_{photo_id}',
 
         'v': 5.131,
     }
@@ -92,7 +91,7 @@ def remove_photo(img_name):
     if os.path.isfile(img_name):
         os.remove(img_name)
     else:
-        raise ValueError(f'file {img_name} is not a file.'.format(img_name))
+        raise ValueError('file is not a file.'.format(img_name))
 
 
 def main():
