@@ -8,11 +8,12 @@ from download_comics import download_random_comic
 def check_VK_response(response):
     values = response.json()
     if "error" in values.keys():
+        print('Ошибка в запросе к ВК', values)
         raise requests.HTTPError()
 
 
 def get_group_server_address(vk_access_token, group_id):
-    url = 'https://api.vk.com/method/photos.getWallUploadServer'
+    url = 'https://api.vk.com/method/phots.getWallUploadServer'
     payload = {
         'access_token': vk_access_token,
         'group_id': group_id,
