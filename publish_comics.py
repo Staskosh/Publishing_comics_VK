@@ -44,8 +44,8 @@ def upload_photo(group_server_address, img_name):
     uploaded_photo = response.json()
     photo = uploaded_photo['photo']
     server = uploaded_photo['server']
-    hash = uploaded_photo['hash']
-    return photo, server, hash
+    hash_value = uploaded_photo['hash']
+    return photo, server, hash_value
 
 
 def save_album_photo(vk_access_token, group_id, photo, server, hash):

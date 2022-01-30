@@ -30,5 +30,4 @@ def download_random_comic():
     title = comic['title']
     img_url = comic['img']
     img_name = download_img(img_url, title)
-    print(img_name)
     return title, img_name
