@@ -13,7 +13,7 @@ def check_VK_response(response):
 
 
 def get_group_server_address(vk_access_token, group_id):
-    url = 'https://api.vk.com/method/phots.getWallUploadServer'
+    url = 'https://api.vk.com/method/photos.getWallUploadServer'
     payload = {
         'access_token': vk_access_token,
         'group_id': group_id,
@@ -21,12 +21,12 @@ def get_group_server_address(vk_access_token, group_id):
     }
     response = requests.get(url, params=payload)
     response.raise_for_status()
-    response_json = response.json()
+    response_vk = response.json()
     try:
         check_VK_response(response)
     except requests.HTTPError:
         exit('Ошибка в запросе адреса сервера группы')
-    group_server_address = response_json['response']['upload_url']
+    group_server_address = response_vk['response']['upload_url']
     return group_server_address
 
 
@@ -60,12 +60,12 @@ def save_album_photo(vk_access_token, group_id, photo, server, hash):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    response_json = response.json()
+    response_vk = response.json()
     try:
         check_VK_response(response)
     except requests.HTTPError:
         exit('Ошибка в запросе сохранение фото в альбом группы')
-    album_photo = response_json['response'][0]
+    album_photo = response_vk['response'][0]
     owner_id = album_photo['owner_id']
     photo_id = album_photo['id']
     return owner_id, photo_id
@@ -111,7 +111,6 @@ def main():
         print('file is not a file.')
     finally:
         remove_photo(img_name)
-
 
 
 if __name__ == '__main__':
