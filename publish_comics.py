@@ -6,8 +6,8 @@ from download_comics import download_random_comic
 
 
 def check_VK_response(response):
-    vallues = response.json()
-    if "error" in vallues.keys():
+    values = response.json()
+    if "error" in values.keys():
         raise requests.HTTPError()
 
 
