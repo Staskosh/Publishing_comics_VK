@@ -12,9 +12,7 @@ def get_random_comic_page():
     return random_page_number
 
 
-def download_img(img_url, title):
-    response = requests.get(img_url)
-    response.raise_for_status()
+def download_img(response, title):
     file_path = f'{title}.png'
     with open(file_path, 'wb') as file:
         file.write(response.content)
@@ -28,6 +26,5 @@ def download_random_comic():
     response.raise_for_status()
     response_json = response.json()
     title = response_json['title']
-    img_url = response_json['img']
-    img_name = download_img(img_url, title)
+    img_name = download_img(response, title)
     return title, img_name
