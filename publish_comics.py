@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from download_comics import download_random_comic
 
 
-def check_VK_response(response):
+def check_vk_response(response):
     values = response.json()
     if "error" in values.keys():
         print('Ошибка в запросе к ВК', values)
@@ -23,7 +23,7 @@ def get_group_server_address(vk_access_token, group_id):
     response.raise_for_status()
     response_vk = response.json()
     try:
-        check_VK_response(response)
+        check_vk_response(response)
     except requests.HTTPError:
         exit('Ошибка в запросе адреса сервера группы')
     group_server_address = response_vk['response']['upload_url']
@@ -38,7 +38,7 @@ def upload_photo(group_server_address, img_name):
         response = requests.post(group_server_address, files=files)
     response.raise_for_status()
     try:
-        check_VK_response(response)
+        check_vk_response(response)
     except requests.HTTPError:
         exit('Ошибка в загрузке фото на сервер группы')
     uploaded_photo = response.json()
@@ -62,7 +62,7 @@ def save_album_photo(vk_access_token, group_id, photo, server, hash):
     response.raise_for_status()
     response_vk = response.json()
     try:
-        check_VK_response(response)
+        check_vk_response(response)
     except requests.HTTPError:
         exit('Ошибка в запросе сохранение фото в альбом группы')
     album_photo = response_vk['response'][0]
@@ -84,7 +84,7 @@ def post_wall(vk_access_token, group_id, owner_id, photo_id, comics_title):
     response = requests.post(url, params=payload)
     response.raise_for_status()
     try:
-        check_VK_response(response)
+        check_vk_response(response)
     except requests.HTTPError:
         exit('Ошибка в публикации фото в группу')
 
