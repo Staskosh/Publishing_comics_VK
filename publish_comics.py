@@ -5,10 +5,9 @@ from dotenv import load_dotenv
 from download_comics import download_random_comic
 
 
-def check_vk_response(response):
-    values = response.json()
-    if "error" in values.keys():
-        raise requests.HTTPError(values)
+def check_vk_response(response_vk):
+    if "error" in response_vk.keys():
+        raise requests.HTTPError(response_vk)
 
 
 def get_group_server_address(vk_access_token, group_id):
@@ -21,7 +20,7 @@ def get_group_server_address(vk_access_token, group_id):
     response = requests.get(url, params=payload)
     response.raise_for_status()
     response_vk = response.json()
-    check_vk_response(response)
+    check_vk_response(response_vk)
     group_server_address = response_vk['response']['upload_url']
     return group_server_address
 
@@ -33,8 +32,8 @@ def upload_photo(group_server_address, img_name):
         }
         response = requests.post(group_server_address, files=files)
     response.raise_for_status()
-    check_vk_response(response)
     uploaded_photo = response.json()
+    check_vk_response(uploaded_photo)
     photo = uploaded_photo['photo']
     server = uploaded_photo['server']
     hash_value = uploaded_photo['hash']
@@ -54,7 +53,7 @@ def save_album_photo(vk_access_token, group_id, photo, server, hash_value):
     response = requests.post(url, params=payload)
     response.raise_for_status()
     response_vk = response.json()
-    check_vk_response(response)
+    check_vk_response(response_vk)
     album_photo = response_vk['response'][0]
     owner_id = album_photo['owner_id']
     photo_id = album_photo['id']
@@ -73,7 +72,8 @@ def post_wall(vk_access_token, group_id, owner_id, photo_id, comics_title):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    check_vk_response(response)
+    response_vk = response.json()
+    check_vk_response(response_vk)
 
 
 def main():
